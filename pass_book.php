@@ -121,6 +121,7 @@ function main() {
 						<th class="<?php echo get_sort_class("t_type");?>"><a href="<?php echo get_sort_url("t_type"); ?> ">Credit</th>
 						<th class="<?php echo get_sort_class("t_type");?>"><a href="<?php echo get_sort_url("t_type"); ?> ">Debit</th>
 						<th class="<?php echo get_sort_class("amount");?>"><a href="<?php echo get_sort_url("amount"); ?> ">Amount</a></th>
+						<th >Balance</th>
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Staff</a></th>
 						<th class="<?php echo get_sort_class("created_datetime");?>"><a href="<?php echo get_sort_url("created_datetime"); ?> ">Date Time</a></th>
 					</tr>
@@ -133,6 +134,7 @@ function main() {
 						  <td><?php if($row["trans_type"]==2){?><span class="badge badge-<?php echo $trans_color[$row["trans_type"]]; ?>"><?php echo $row["t_type"]; ?></span><?php } ?></td>
 						  
 						  <td><?php echo $row["amount"]; ?></td>
+						  <td><?php echo $row["balance"]; ?></td>
 						  <td><?php echo $row["user_name"]."(".$row["name"].")"; ?></td>
 						  <td><?php echo get_date_format($row["created_datetime"]); ?></td>
 						  

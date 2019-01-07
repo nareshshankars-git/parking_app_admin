@@ -3,6 +3,7 @@ $page_name="Transaction List";
 include("core/pagination/pagination.php");
 
 function main() {
+	$trans_type=array(1=>'Print',2=>'SMS');
 	global $db_helper_obj;
 	// Pagination 
 	$item_per_page=10;
@@ -96,7 +97,9 @@ function main() {
 						<th class="<?php echo get_sort_class("slot_name");?>"><a href="<?php echo get_sort_url("slot_name"); ?> ">Slot Name</a></th>
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Customer</a></th>
 						<th class="<?php echo get_sort_class("check_in");?>"><a href="<?php echo get_sort_url("check_in"); ?> ">Check In</a></th>
+						<th>Check In Transaction</th>
 						<th class="<?php echo get_sort_class("check_out");?>"><a href="<?php echo get_sort_url("check_out"); ?> ">Check Out</a></th>
+						<th>Check Out Transaction</th>
 						<th >Amount (Slot)</th>
 					</tr>
 					</thead>
@@ -109,7 +112,9 @@ function main() {
 						  <td><?php echo $row["slot_name"]; ?></td>
 						  <td><?php echo $row["mobile_number"];if($row["name"]) echo "(".$row["name"].")"; ?></td>
 						  <td><?php echo get_date_format($row["check_in"]); ?></td>
+						  <td><?php if(isset($row["check_in_transaction"])) echo $trans_type[$row["check_in_transaction"]]; ?></td>
 						  <td><?php if(isset($row["check_out"])) echo get_date_format($row["check_out"]); ?></td>
+						  <td><?php if(isset($row["check_out_transaction"])) echo $trans_type[$row["check_out_transaction"]]; ?></td>
 						  <td><?php if($row["amount"])echo $row["amount"]." (".$row["slot_count"].")"; ?></td>
 						</tr>
 					<?php } }else{ ?>

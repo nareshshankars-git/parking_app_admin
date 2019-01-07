@@ -1320,6 +1320,15 @@ table.dbkit-table tr td {
     background: -webkit-linear-gradient(59deg, rgb(254, 208, 63) 0%, rgb(230, 190, 63) 110%);
     background: linear-gradient(31deg, rgb(254, 208, 63) 0%, rgb(230, 190, 63) 110%);
 }
+.sbg5 {
+    background: #6c757d70;
+}
+.sbg6 {
+    background: rgba(255, 59, 0, 0.72);
+}
+.sbg7 {
+    background: #cc004b;
+}
 
 .seofct-icon {
     color: #fff;

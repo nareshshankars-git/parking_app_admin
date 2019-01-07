@@ -16,7 +16,7 @@ class db_helper extends db_query{
 			return "";
 	}
 	function get_dashboard_data(){
-		$data= $this->select_query("check_in_out_log","count(id) as vehicle_in,(SELECT count(id) FROM `customer`where 1) as customer,(SELECT count(id) FROM `monthly_pass` where month=".date('m') .") as monthly_pass_active,(SELECT count(id) FROM `monthly_pass` where 1) as monthly_pass,(SELECT count(id) FROM `vehicle`where 1) as vehicle","check_out is null",[]);
+		$data= $this->select_query("check_in_out_log","count(id) as vehicle_in,(SELECT count(id) FROM `customer`where 1) as customer,(SELECT count(id) FROM `monthly_pass` where month=".date('m') .") as monthly_pass_active,(SELECT count(id) FROM `monthly_pass` where 1) as monthly_pass,(SELECT count(id) FROM `vehicle`where 1) as vehicle,(SELECT balance FROM `money_in_out` ORDER BY `id` DESC limit 0,1) as balance,(SELECT sum(amount) FROM `money_in_out` where trans_from=2 and created_datetime>-'".date("Y-m-d")." 00:00:00' and created_datetime<='".date("Y-m-d")." 23:59:59') as expense,(SELECT sum(amount) FROM `money_in_out` where trans_from=3 and created_datetime>-'".date("Y-m-d")." 00:00:00' and created_datetime<='".date("Y-m-d")." 23:59:59') as cash_recv","check_out is null",[],"");
 		if(count($data)>0)
 			return $data[0];
 		else
@@ -55,7 +55,7 @@ class db_helper extends db_query{
 		return $this->select_query("users","id,name,user_name","1",array());
 	}
 	function login_history($where="1",$where_array,$sort_by="") {
-		$data= $this->select_query("login_history a,users b","a.id,a.login_datetime,a.logout_datetime,b.name,b.user_name","a.	user_id=b.id and b.user_type=1 and ".$where,$where_array,$sort_by);
+		$data= $this->select_query("login_history a,users b","a.id,a.login_datetime,a.logout_datetime,a.amount,b.name,b.user_name","a.	user_id=b.id and b.user_type=1 and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function user_login_history($id) {
@@ -150,7 +150,7 @@ class db_helper extends db_query{
 	//transc ends
 	//coh starts
 	function pass_book_list($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("money_in_out a,transaction_type b,transaction_from c,users e ","a.id,a.amount,a.created_datetime,e.name,e.user_name,c.name as from_name,b.name as t_type,a.trans_type","a.trans_type=b.id and a.trans_from=c.id and a.created_by=e.id and ".$where,$where_array,$sort_by);
+		$data= $this->select_query("money_in_out a,transaction_type b,transaction_from c,users e ","a.id,a.amount,a.balance,a.created_datetime,e.name,e.user_name,c.name as from_name,b.name as t_type,a.trans_type","a.trans_type=b.id and a.trans_from=c.id and a.created_by=e.id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function cash_on_hand_list($where="1",$where_array,$sort_by=""){
@@ -215,7 +215,7 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function get_transaction_list($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function cust_trans_history($id){

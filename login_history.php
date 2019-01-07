@@ -43,6 +43,7 @@ function main() {
 						<th class="<?php echo get_sort_class("user_name");?>"><a href="<?php echo get_sort_url("user_name"); ?> ">User Name</a></th>
 						<th class="<?php echo get_sort_class("login_datetime");?>"><a href="<?php echo get_sort_url("login_datetime"); ?> ">Log In</a></th>
 						<th class="<?php echo get_sort_class("logout_datetime");?>"><a href="<?php echo get_sort_url("logout_datetime"); ?> ">Log Out</a></th>
+						<th>Amount</th>
 					  
 					</tr>
 					</thead>
@@ -54,6 +55,7 @@ function main() {
 						  <td><?php echo $row["user_name"]; ?></td>
 						  <td><?php echo get_date_format($row["login_datetime"]); ?></td>
 						  <td><?php if($row["logout_datetime"]) echo get_date_format($row["logout_datetime"]); ?></td>
+						  <td><?php if($row["amount"]) echo $row["amount"]; ?></td>
 						  
 						</tr>
 					<?php } }else{ ?>

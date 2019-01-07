@@ -42,7 +42,6 @@ function main() {
 					  
 					  <th >Amount</th>
 					  <th >Date Time</th>
-					  <th >Action</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -52,9 +51,7 @@ function main() {
 						  <td><?php echo $row["amount"]; ?></td>
 						  <td><?php echo get_date_format($row["created_datetime"]); ?></td>
 						  
-						 <td>
-						  	<a href="coh_add.php?id=<?php echo $row["id"]; ?>" ><i class="fa fa-pencil"></i></a>
-						 </td>
+						
 						</tr>
 					<?php } }else{ ?>
                   <tr>

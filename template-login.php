@@ -1,9 +1,11 @@
 <?php
 include("config/config.php");
+
 if((isset($_SESSION["user_id"]))){ // checking whether valid session
-	if($_SESSION["user_id"]==0)
+	if($_SESSION["user_id"]==0){
 		header("location: dashboard.php");
-	exit();
+		exit();
+	}
 }
 include("core/class/db_query.php");                               // lib class for query builder
 include("core/class/db_helper_admin.php");                      // helper class to cnct with db
