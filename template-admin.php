@@ -38,9 +38,24 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
     <link rel="stylesheet" href="assets/css/default-css.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <!-- modernizr css -->
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
-	 <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<style>
+	.dataTables_wrapper .dataTables_paginate .paginate_button {
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+     padding: 0em 0em; 
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    *: ;
+    cursor: hand;
+    color: #333 !important;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+	</style>
 </head>
 
 <body>
@@ -68,11 +83,20 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
 							<li class="<?php echo get_menu_active('transaction_list.php'); ?>">
                                 <a href="transaction_list.php" aria-expanded="true"><i class="ti-exchange-vertical"></i><span>Transactions</span></a>
 							</li>
+							<li class="<?php echo get_menu_active('check_in_list.php'); ?>">
+                                <a href="check_in_list.php" aria-expanded="true"><i class="ti-list"></i><span>Check In List</span></a>
+							</li>
 							<li class="<?php echo get_menu_active('pass_book.php'); ?>">
                                 <a href="pass_book.php" aria-expanded="true"><i class="ti-book"></i><span>Pass Book</span></a>
 							</li>
 							<li class="<?php echo get_menu_active('cash_on_hand.php'); ?>">
                                 <a href="cash_on_hand.php" aria-expanded="true"><i class="ti-briefcase"></i><span>Cash Recieved</span></a>
+							</li>
+							<li class="<?php echo get_parent_active(array('audit.php','vehicle.php')); ?>">
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-agenda"></i><span>Audit</span></a>
+								<ul class="collapse">
+                                    <li class="<?php echo get_menu_active('audit.php'); ?>"><a href="audit.php">Audit Add</a></li> <li class="<?php echo get_menu_active('audit_list.php'); ?>"><a href="audit_list.php">Audit List</a></li>
+								</ul>
 							</li>
 							<li class="<?php echo get_parent_active(array('customer.php','vehicle.php','monthly_pass.php')); ?>">
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-link"></i><span>Customer</span></a>

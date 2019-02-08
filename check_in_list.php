@@ -1,10 +1,18 @@
 <?php
-$page_name="Transaction List";
+$page_name="Check In List";
 include("core/pagination/pagination.php");
 
 function main() {
+		global $db_helper_obj;
+	if(isset($_POST['trans_id']) && $_POST['trans_id']!=""){
+		$ins_arr=array();
+		$ins_arr["notes"]=$_POST['notes'];
+		$id=$db_helper_obj->update_check_in_out_log($ins_arr,$_POST["trans_id"]);
+		header("location: audit.php");
+		exit();
+	}
 	$trans_type=array(1=>'Print',2=>'SMS');
-	global $db_helper_obj;
+
 	// Pagination 
 	$item_per_page=10;
 	$page_number=get_page_no();
@@ -41,12 +49,12 @@ function main() {
 		$page_url_form.="&date=".$_REQUEST['date'];
 	}
 	// Search condition ==========================> Ends
-	$transaction_list=$db_helper_obj->get_transaction_list($where,$where_arr,$sort_by); // getting all the users data
+	$transaction_list=$db_helper_obj->get_check_in_list($where,$where_arr,$sort_by); // getting all the users data
 	$get_total_rows = count($transaction_list);
 	
 	if($get_total_rows > $item_per_page){
 		$page_position = (($page_number-1) * $item_per_page);
-		$transaction_list=$db_helper_obj->get_transaction_list($where,$where_arr," $sort_by LIMIT $page_position, $item_per_page");
+		$transaction_list=$db_helper_obj->get_check_in_list($where,$where_arr," $sort_by LIMIT $page_position, $item_per_page");
 		$page_url=get_page_url().$page_url_form;
 	}
 	?>
@@ -55,7 +63,7 @@ function main() {
 <div class="container-fluid">
     <div class="card mb-3">
         <div class="card-header">
-          Transaction List</div>
+          Check In List</div>
         <div class="card-body">
 			<form name="search_form" method="get">
 				<div class="form-row">
@@ -98,9 +106,8 @@ function main() {
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Customer</a></th>
 						<th class="<?php echo get_sort_class("check_in");?>"><a href="<?php echo get_sort_url("check_in"); ?> ">Check In</a></th>
 						<th>Check In Transaction</th>
-						<th class="<?php echo get_sort_class("check_out");?>"><a href="<?php echo get_sort_url("check_out"); ?> ">Check Out</a></th>
-						<th>Check Out Transaction</th>
-						<th >Amount (Slot)</th>
+
+						<th >Notes</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -113,9 +120,8 @@ function main() {
 						  <td><?php echo $row["mobile_number"];if($row["name"]) echo "(".$row["name"].")"; ?></td>
 						  <td><?php echo get_date_format($row["check_in"]); ?></td>
 						  <td><?php if(isset($row["check_in_transaction"])) echo $trans_type[$row["check_in_transaction"]]; ?></td>
-						  <td><?php if(isset($row["check_out"])) echo get_date_format($row["check_out"]); ?></td>
-						  <td><?php if(isset($row["check_out_transaction"])) echo $trans_type[$row["check_out_transaction"]]; ?></td>
-						  <td><?php if($row["amount"])echo $row["amount"]." (".$row["slot_count"].")"; ?></td>
+							<td><?php if($row["notes"]) echo $row["notes"];
+else{							?><button onclick="add_notes('<?php echo $row["id"]; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#add_note_modal">Add Notes</button> <?php } ?></td>
 						</tr>
 					<?php } }else{ ?>
                   <tr>
@@ -142,6 +148,38 @@ function main() {
 <?php }
 include 'template-admin.php';
 ?>
+<div class="modal fade" id="add_note_modal">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add Note</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="modal-body" id="detail_content">
+				<form name="edit" method="post" id="edit_form" >
+       
+					<input type="hidden" name="trans_id" id="trans_id" value="" />
+					<div class="row">
+					<div class="col-md-12 ">
+						<div class="form-group">
+						<label>Notes</label>
+							<textarea id="notes_id" class="form-control input-sm" name="notes"></textarea>
+						</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 mt">
+						<button type="submit" class="btn btn-primary" >Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
 
       <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
@@ -168,4 +206,7 @@ include 'template-admin.php';
 			
 			$('#config-demo').val('<?php echo $date; ?>');
 	  });
+	  function add_notes(id){
+		  document.getElementById('trans_id').value=id;
+	  }
 	</script>

@@ -134,6 +134,10 @@ class db_helper extends db_query{
 	}
 	//model ends	
 	//transc starts
+	function update_check_in_out_log($upd_arr,$id){
+		$where="id =:id";
+		return $this->update_query("check_in_out_log",$upd_arr,$where,array('id'=>$id));
+	}
 	function get_trans_type(){
 		return $this->select_query("transaction_type","id,name",1,[]);
 	}
@@ -164,12 +168,26 @@ class db_helper extends db_query{
 	function add_coh($insr_array){
 		return $this->insert_query("cash_on_hand",$insr_array);
 	}
+	function add_audit($insr_array){
+		return $this->insert_query("audit",$insr_array);
+	}
+	function add_audit_details($insr_array){
+		return $this->insert_query("audit_details",$insr_array);
+	}
 	function update_coh($upd_arr,$id){
 		$where="id =:id";
 		return $this->update_query("cash_on_hand",$upd_arr,$where,array('id'=>$id));
 	}
 	//coh ends
 	//other starts
+	function get_audit_list($where="1",$where_array,$sort_by=""){
+		$data= $this->select_query("audit","id,name,from_date,to_date,created_datetime",$where,$where_array,$sort_by);
+		return $data;
+	}
+	function get_audit_detail($id){
+		$data= $this->select_query("audit_details","id,org_amount,amount,notes,trans_id","trans_id=?",[$id]);
+		return $data;
+	}
 	function get_customer_list($where="1",$where_array,$sort_by=""){
 		$data= $this->select_query("customer","id,name,address,mobile_number",$where,$where_array,$sort_by);
 		return $data;
@@ -216,6 +234,10 @@ class db_helper extends db_query{
 	}
 	function get_transaction_list($where="1",$where_array,$sort_by=""){
 		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
+		return $data;
+	}
+	function get_check_in_list($where,$where_array,$sort_by=""){
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount,f.notes","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and f.check_out is null and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function cust_trans_history($id){
