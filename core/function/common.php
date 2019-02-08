@@ -73,10 +73,14 @@
 			echo 'selected="selected"';
 	}
 	function get_veh_no($data){
-	$veh_no=$data["state"]." ".$data["city"];
-		if($data["alpha"])
-			$veh_no.=" ".$data["alpha"];
-		$veh_no.=" ".$data["reg_no"];
+		if($data["city"]==0){
+			$veh_no=$data["alpha"]." ".$data["reg_no"];
+		}else{
+			$veh_no=$data["state"]." ".$data["city"];
+			if($data["alpha"])
+				$veh_no.=" ".$data["alpha"];
+			$veh_no.=" ".$data["reg_no"];
+		}
 	return $veh_no;
 }
 function get_month($id){
