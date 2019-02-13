@@ -8,7 +8,7 @@ $img = imagecreate("500", "100");
  //imageline($img,0,0,300,600,$c2); 
  //imageline($img,300,0,0,600,$c2);
  $black = imagecolorallocate($img, 0,0,0);
-imagettftext($img, 48, 0, 0, 0, $black, "D:/xampp/htdocs/parking_app_admin/core/qrcode/Verdana.ttf", $html_code); 
+imagettftext($img, 48, 0, 0, 0, $black, "D:/xampp/htdocs/admin/core/qrcode/Verdana.ttf", $html_code); 
  
  
 //$src = imagecreatefromjpeg('a.jpg');

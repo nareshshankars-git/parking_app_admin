@@ -1,3 +1,4 @@
 
 config/config.php
 core/qrcode/temp/*
+core/qrcode/test.png
