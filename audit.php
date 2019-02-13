@@ -22,6 +22,9 @@ function main() {
 		exit();
 		
 	}
+	if(isset($_REQUEST['next']) && $_REQUEST['next']!=""){
+		$_SESSION['next']=true;
+	}
 	if(isset($_REQUEST['reset']) && $_REQUEST['reset']!=""){
 		$ins_arr=array();
 		$ins_arr["name"]=$_SESSION['audit_name'];
@@ -30,9 +33,11 @@ function main() {
 		$ins_arr["created_datetime"]=date("Y-m-d H:i:s",time());
 		$ins_arr["created_by"]=$_SESSION["user_id"];
 		$id=$db_helper_obj->add_audit($ins_arr);
+		
 		foreach($_SESSION['audit_detail'] as $va=>$key){
 			$ins_detail=array();
 			$ins_detail=$key;
+			$ins_detail["audit_id"]=$id;
 			$ins_detail["created_datetime"]=date("Y-m-d H:i:s",time());
 			$db_helper_obj->add_audit_details($ins_detail);
 		}
@@ -40,6 +45,7 @@ function main() {
 		unset($_SESSION['audit_detail']);
 		unset($_SESSION['from_date']);
 		unset($_SESSION['to_date']);
+		unset($_SESSION['next']);
 		header("location: audit.php");
 		exit();
 		
@@ -51,7 +57,11 @@ function main() {
 		$where="1";
 		$where_arr=array();
 		if(isset($_SESSION["audited_id"]) && count($_SESSION["audited_id"])>0){
-			$where.=" and f.id not in (".implode(',',$_SESSION["audited_id"]).")";
+			if(isset($_SESSION['next']) && $_SESSION['next']===true){
+				$where.=" and f.id in (".implode(',',$_SESSION["audited_id"]).")";
+			}else{
+				$where.=" and f.id not in (".implode(',',$_SESSION["audited_id"]).")";
+			}
 		}
 		$where.=" and (f.last_updated >=? and  f.last_updated <=?)";
 		$where_arr[]=$_SESSION['from_date'];
@@ -86,8 +96,12 @@ function main() {
                     </div>
                 </div>
 			</form>
-		<?php }else{ ?>
+		<?php }else{ 
+			if(isset($_SESSION['next']) && $_SESSION['next']===true){?>
 		<a href="audit.php?reset=1"><button class="btn btn-danger">Finish</button></a>
+			<?php }else{?>
+		<a href="audit.php?next=1"><button class="btn btn-primary">Next</button></a>
+			<?php } ?>
 		</div>
         <div class="table-responsive">
             <div id="dataTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -119,11 +133,11 @@ function main() {
 						  <td><?php echo get_date_format($row["check_in"]); ?></td>
 						  <td><?php if(isset($row["check_out"])) echo get_date_format($row["check_out"]); ?></td>
 						  <td><?php if($row["amount"])echo $row["amount"]." (".$row["slot_count"].")"; ?></td>
-						  <td><i onclick="delete_row(this,'<?php echo $row["id"] ?>')" class="fa fa-check-square" aria-hidden="true"></i> &nbsp;/&nbsp;
-						  <?php if($row["amount"]){?>
+						  <td>
+						  <?php if(isset($_SESSION['next']) && $_SESSION['next']===true){?>
 						  <i data-toggle="modal" data-target="#myModal" class="fa fa-pencil" aria-hidden="true" onclick="edit_row(this,<?php echo $row["id"]; ?>,<?php echo $row["amount"]; ?>)"></i>
 						  <?php }else{ ?>
-						  <i data-toggle="modal" data-target="#myModal" class="fa fa-sign-out" aria-hidden="true" onclick="edit_row(this,<?php echo $row["id"]; ?>,0)"></i>
+						  <i  class="fa fa-sign-out" aria-hidden="true" onclick="delete_row(this,<?php echo $row["id"]; ?>,0)"></i>
 						  <?php } ?>
 						  </td>
 						</tr>

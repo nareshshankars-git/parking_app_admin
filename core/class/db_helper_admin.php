@@ -185,7 +185,11 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function get_audit_detail($id){
-		$data= $this->select_query("audit_details","id,org_amount,amount,notes,trans_id","trans_id=?",[$id]);
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f,audit_details g","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,g.org_amount,g.amount,g.notes","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and g.trans_id=f.id and g.audit_id=?",[$id]);
+		return $data;
+	}
+	function get_otp_list($where="1",$where_array,$sort_by=""){
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f,check_out_otp g","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.amount,f.slot_count,g.otp,g.created_datetime,g.status","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and  g.c_log_id=f.id and ".$where,$where_array,$sort_by,1);
 		return $data;
 	}
 	function get_customer_list($where="1",$where_array,$sort_by=""){
