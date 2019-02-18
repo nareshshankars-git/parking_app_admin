@@ -95,6 +95,18 @@ class db_helper extends db_query{
 		return $this->update_query("slot_master",$upd_arr,$where,array('id'=>$id));
 	}
 	//slot ends
+	function update_setting($upd_arr,$id){
+		$where="id =:id";
+		return $this->update_query("settings",$upd_arr,$where,array('id'=>$id));
+	}
+	function get_general_setting(){
+		$data= $this->select_query("settings","*",1,array());
+		$arr=array();
+		foreach($data as $va=>$key){
+			$arr[$key["name"]]=$key["value"];
+		}
+		return $arr;
+	}
 	//state starts
 	function get_state_list($where="1",$where_array,$sort_by=""){
 		$data= $this->select_query("reg_state","id,name,del_status",$where,$where_array,$sort_by);
