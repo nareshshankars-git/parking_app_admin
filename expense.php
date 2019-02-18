@@ -71,6 +71,7 @@ function main() {
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Staff</a></th>
 						<th class="<?php echo get_sort_class("amount");?>"><a href="<?php echo get_sort_url("amount"); ?> ">Amount</a></th>
 						<th class="<?php echo get_sort_class("notes");?>"><a href="<?php echo get_sort_url("notes"); ?> ">Notes</a></th>
+						<th class="<?php echo get_sort_class("created_datetime");?>"><a href="<?php echo get_sort_url("created_datetime"); ?> ">Created Date Time</a></th>
 						<th></th>
 					</tr>
 					</thead>
@@ -81,7 +82,9 @@ function main() {
 						  <td><?php echo $row["name"]." (".$row["user_name"].")"; ?></td>
 						  <td><?php echo $row["amount"]; ?></td>
 						  <td><?php echo $row["notes"]; ?></td>
+						  <td><?php  echo get_date_format($row["created_datetime"]);?></td>
 						  <td><?php if($row["edit_history"]>1){?><a href="javascript:void(0)" title="History" onclick="call_ajax_url('expense_hstry','trnsc_content','id=<?php echo $row['id']; ?>')"  data-toggle="modal" data-target="#expn_list_modal">   <i class="fa fa-history"></i> Show Edit History(<?php echo $row["edit_history"]; ?>)</a><?php }?></td>
+						  
 						  
 						</tr>
 					<?php } }else{ ?>

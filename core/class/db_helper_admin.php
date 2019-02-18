@@ -58,6 +58,10 @@ class db_helper extends db_query{
 		$data= $this->select_query("login_history a,users b","a.id,a.login_datetime,a.logout_datetime,a.amount,b.name,b.user_name","a.	user_id=b.id and b.user_type=1 and ".$where,$where_array,$sort_by);
 		return $data;
 	}
+	function login_unlock_history($where="1",$where_array,$sort_by="") {
+		$data= $this->select_query("lock_screen a,users b","a.id,a.img_path,b.name,b.user_name,a.created_datetime","a.user_id=b.id and b.user_type=1 and ".$where,$where_array,$sort_by);
+		return $data;
+	}
 	function user_login_history($id) {
 		return $this->select_query("login_history","login_datetime,logout_datetime","user_id=?",[$id],"order by created_datetime desc");
 	}
@@ -154,7 +158,7 @@ class db_helper extends db_query{
 	//transc ends
 	//coh starts
 	function pass_book_list($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("money_in_out a,transaction_type b,transaction_from c,users e ","a.id,a.amount,a.balance,a.created_datetime,e.name,e.user_name,c.name as from_name,b.name as t_type,a.trans_type","a.trans_type=b.id and a.trans_from=c.id and a.created_by=e.id and ".$where,$where_array,$sort_by);
+		$data= $this->select_query("money_in_out a,transaction_type b,transaction_from c,users e ","a.id,a.trans_from,a.trans_for_id,a.amount,a.balance,a.created_datetime,e.name,e.user_name,c.name as from_name,b.name as t_type,a.trans_type","a.trans_type=b.id and a.trans_from=c.id and a.created_by=e.id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function cash_on_hand_list($where="1",$where_array,$sort_by=""){
@@ -162,7 +166,7 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function get_coh_by_id($id){
-		$data= $this->select_query("cash_on_hand","id,user_id,amount","id=?",[$id]);
+		$data= $this->select_query("cash_on_hand","id,user_id,amount,created_datetime","id=?",[$id]);
 		return $data[0];
 	}
 	function add_coh($insr_array){
@@ -189,7 +193,7 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function get_otp_list($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f,check_out_otp g","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.amount,f.slot_count,g.otp,g.created_datetime,g.status","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and  g.c_log_id=f.id and ".$where,$where_array,$sort_by,1);
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f,check_out_otp g","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.amount,f.slot_count,g.otp,g.created_datetime,g.status","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and  g.c_log_id=f.id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function get_customer_list($where="1",$where_array,$sort_by=""){
@@ -212,6 +216,10 @@ class db_helper extends db_query{
 		$data= $this->select_query("users a,expense b,expense_history c","b.id,b.notes,b.amount,b.created_datetime,a.name,a.user_name,count(c.id) as edit_history","a.id=b.created_by and b.id=c.expense_id and ".$where." group by c.expense_id ",$where_array,$sort_by);
 		return $data;
 	}
+	function get_expense_detail($id){
+		$data= $this->select_query("users a,expense b","b.id,b.notes,b.amount,b.created_datetime,a.name,a.user_name","a.id=b.created_by and b.id=?",[$id]);
+		return $data;
+	}
 	function expense_history($id){
 		$data= $this->select_query("expense_history","notes,amount,updated_datetime","expense_id=?",[$id],"order by updated_datetime desc");
 		return $data;
@@ -222,6 +230,10 @@ class db_helper extends db_query{
 	}
 	function get_monthly_pass($where="1",$where_array,$sort_by=""){
 		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,f.month,f.updated_datetime,f.status","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
+		return $data;
+	}
+	function get_montly_pass_details($id){
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f,monthly_pass_renewal g","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,g.month,g.amount,g.created_datetime","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and g.pass_id=f.id and g.id=?",[$id]);
 		return $data;
 	}	
 	function get_mnt_pass_by_id($id){
@@ -238,6 +250,10 @@ class db_helper extends db_query{
 	}
 	function get_transaction_list($where="1",$where_array,$sort_by=""){
 		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
+		return $data;
+	}
+	function get_trans_details($id){
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and f.id=?",[$id]);
 		return $data;
 	}
 	function get_check_in_list($where,$where_array,$sort_by=""){

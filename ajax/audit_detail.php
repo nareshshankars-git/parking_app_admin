@@ -7,7 +7,7 @@ if(isset($_GET['id']) && $_GET['id']!=""){
 	$db_helper_obj=new db_helper();
 	$result=$db_helper_obj->get_audit_detail($_GET['id']);
 ?>
-<table class="table table-hover text-center dataTable"  cellspacing="0" role="grid" aria-describedby="dataTable_info">
+<table class="table  text-center dataTable"  cellspacing="0" role="grid" aria-describedby="dataTable_info">
 <thead>
 <tr role="row">
 	<th>S.No</th>

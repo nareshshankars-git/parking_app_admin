@@ -124,6 +124,7 @@ function main() {
 						<th >Balance</th>
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Staff</a></th>
 						<th class="<?php echo get_sort_class("created_datetime");?>"><a href="<?php echo get_sort_url("created_datetime"); ?> ">Date Time</a></th>
+						<th>Action</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -137,7 +138,7 @@ function main() {
 						  <td><?php echo $row["balance"]; ?></td>
 						  <td><?php echo $row["user_name"]."(".$row["name"].")"; ?></td>
 						  <td><?php echo get_date_format($row["created_datetime"]); ?></td>
-						  
+						  <td><button onclick="call_ajax_url('pass_book_detail','detail_content','id=<?php echo $row['id']; ?>&trans_from=<?php echo $row['trans_from']?>&trans_for_id=<?php echo $row['trans_for_id']?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#pass_book_modal">Details</button></td>
 						</tr>
 					<?php } }else{ ?>
                   <tr>
@@ -159,7 +160,22 @@ function main() {
         </div>
       </div>
 </div>
-
+<div class="modal fade" id="pass_book_modal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Details</h5>
+					<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+				</div>
+				<div class="modal-body" id="detail_content">
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
     <!-- /.container-fluid-->
 <?php }
 include 'template-admin.php';

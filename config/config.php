@@ -4,7 +4,7 @@ if(!isset($_SESSION))
 	date_default_timezone_set("Asia/Calcutta");
 	$server="localhost";
 	$username="root";
-	$password="";
+	$password="root";
 	$db="parking_app";
 	global $conn;
 	$conn = new PDO('mysql:host='.$server.';dbname='.$db.';charset=utf8mb4', $username, $password);

@@ -42,11 +42,11 @@ function main() {
 			$ins_trans=array();
 			$ins_trans['amount']=$amount;
 			$ins_trans['trans_from']=3;
-			$ins_trans['trans_type']=1;
+			$ins_trans['trans_type']=2;
 			$ins_trans['trans_for_id']=$db_helper_obj->add_coh($ins_coh);
 			$ins_trans["created_datetime"]=date("Y-m-d H:i:s",time());
 			$ins_trans["created_by"]=$_SESSION["user_id"];
-			$db_helper_obj->add_trans($ins_trans);
+			$db_helper_obj->add_transaction($ins_trans);
 			set_success_msg('Cash Recieved Added Successfully');
 			header("location: cash_on_hand.php");
 			exit();

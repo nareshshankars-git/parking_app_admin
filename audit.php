@@ -33,19 +33,43 @@ function main() {
 		$ins_arr["created_datetime"]=date("Y-m-d H:i:s",time());
 		$ins_arr["created_by"]=$_SESSION["user_id"];
 		$id=$db_helper_obj->add_audit($ins_arr);
-		
+		$tot=0;
 		foreach($_SESSION['audit_detail'] as $va=>$key){
+			$tot+=($key["org_amount"]-$key["amount"]);
 			$ins_detail=array();
 			$ins_detail=$key;
 			$ins_detail["audit_id"]=$id;
 			$ins_detail["created_datetime"]=date("Y-m-d H:i:s",time());
 			$db_helper_obj->add_audit_details($ins_detail);
+			$upd_arr=array();
+			if($key["org_amount"]==0){
+				$upd_arr["check_out"]=$ins_arr["created_datetime"];
+				$upd_arr["check_out_transaction"]=4;
+			}
+			$upd_arr["last_updated"]=$ins_arr["created_datetime"];
+			$upd_arr["amount"]=$key["amount"];
+			$db_helper_obj->update_check_in_out_log($upd_arr,$key["trans_id"]);
 		}
+		$ins_trans=array();
+		if($tot>0){
+			$ins_trans['amount']=$tot;
+			$ins_trans['trans_type']=2;
+		}else{
+			$ins_trans['amount']=$tot * (-1);
+			$ins_trans['trans_type']=1;
+		}
+		$ins_trans['trans_from']=5;
+		$ins_trans['trans_for_id']=$id;
+		$ins_trans["created_datetime"]=date("Y-m-d H:i:s",time());
+		$ins_trans["created_by"]=$_SESSION["user_id"];
+		$db_helper_obj->add_transaction($ins_trans);
+		
 		unset($_SESSION['audit_name']);
 		unset($_SESSION['audit_detail']);
 		unset($_SESSION['from_date']);
 		unset($_SESSION['to_date']);
 		unset($_SESSION['next']);
+		unset($_SESSION['audited_id']);
 		header("location: audit.php");
 		exit();
 		

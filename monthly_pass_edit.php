@@ -1,5 +1,5 @@
 <?php
-$page_name="Vehicle Edit";
+$page_name="Monthly Pass Edit";
 function main() {
 	$error="";
 	$month="";
@@ -126,7 +126,7 @@ function main() {
 					<div class="col-md-6 col-sm-6" >
 						
 						<button type="submit" name="<?php echo $action; ?>"  class="btn-primary btn"><?php echo $action; ?></button>
-						<a class="btn-danger btn" href="vehicle.php" />Cancel</a>
+						<a class="btn-danger btn" href="monthly_pass.php" />Cancel</a>
 					</div>
 				</div>
 			</div>

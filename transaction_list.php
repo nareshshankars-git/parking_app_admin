@@ -3,7 +3,7 @@ $page_name="Transaction List";
 include("core/pagination/pagination.php");
 
 function main() {
-	$trans_type=array(1=>'Print',2=>'SMS');
+	$trans_type=array(1=>'Print',2=>'SMS',3=>'WhatsApp',4=>'Audit');
 	global $db_helper_obj;
 	// Pagination 
 	$item_per_page=10;

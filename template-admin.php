@@ -92,27 +92,28 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
 							<li class="<?php echo get_menu_active('cash_on_hand.php'); ?>">
                                 <a href="cash_on_hand.php" aria-expanded="true"><i class="ti-briefcase"></i><span>Cash Recieved</span></a>
 							</li>
-							<li class="<?php echo get_parent_active(array('audit.php','vehicle.php')); ?>">
+							<li class="<?php echo get_parent_active(array('audit.php','audit_list.php')); ?>">
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-agenda"></i><span>Audit</span></a>
 								<ul class="collapse">
                                     <li class="<?php echo get_menu_active('audit.php'); ?>"><a href="audit.php">Audit Add</a></li> <li class="<?php echo get_menu_active('audit_list.php'); ?>"><a href="audit_list.php">Audit List</a></li>
 								</ul>
 							</li>
-							<li class="<?php echo get_parent_active(array('customer.php','vehicle.php','monthly_pass.php')); ?>">
+							<li class="<?php echo get_parent_active(array('customer.php','vehicle.php','monthly_pass.php','otp_list.php')); ?>">
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-link"></i><span>Customer</span></a>
                                 <ul class="collapse">
                                     <li class="<?php echo get_menu_active('customer.php'); ?>"><a href="customer.php">Customer List</a></li>
 									<li class="<?php echo get_menu_active('vehicle.php'); ?>"><a href="vehicle.php">Vehicle List </a></li>
 									<li class="<?php echo get_menu_active('monthly_pass.php'); ?>"><a href="monthly_pass.php">Monthly Pass List</a></li>
+									<li class="<?php echo get_menu_active('otp_list.php'); ?>"><a href="otp_list.php">Check out OTP List</a></li>
                                     
                                 </ul>
                             </li>
-							<li class="<?php echo get_parent_active(array('users.php','login_history.php','expense.php')); ?>">
+							<li class="<?php echo get_parent_active(array('users.php','login_history.php','expense.php','login_history_pic.php')); ?>">
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-user"></i><span>Staffs</span></a>
                                 <ul class="collapse">
                                     <li class="<?php echo get_menu_active('users.php'); ?>"><a href="users.php">Staff List</a></li> 
 									<li class="<?php echo get_menu_active('expense.php'); ?>"><a href="expense.php">Expense List</a></li>
-									<li class="<?php echo get_menu_active('login_history.php'); ?>"><a href="login_history.php">Login History</a></li>
+									<li class="<?php echo get_menu_active('login_history.php'); ?>"><a href="login_history.php">Login History</a></li><li class="<?php echo get_menu_active('login_history_pic.php'); ?>"><a href="login_history_pic.php">Unlock History</a></li>
                                     
                                 </ul>
                             </li>
