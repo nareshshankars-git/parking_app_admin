@@ -117,12 +117,13 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
                                     
                                 </ul>
                             </li>
-							<li class="<?php echo get_parent_active(array('slot.php','make_model.php','state.php')); ?>">
+							<li class="<?php echo get_parent_active(array('slot.php','make_model.php','state.php','general_setting.php')); ?>">
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-settings"></i><span>Settings</span></a>
                                 <ul class="collapse">
                                     <li class="<?php echo get_menu_active('slot.php'); ?>"><a href="slot.php">Slots</a></li>
 									<li class="<?php echo get_menu_active('state.php'); ?>"><a href="state.php">State</a></li>
 									<li class="<?php echo get_menu_active('make_model.php'); ?>"><a href="make_model.php">Make Model</a></li>
+									<li class="<?php echo get_menu_active('general_setting.php'); ?>"><a href="general_setting.php">General Setting</a></li>
                                     
                                 </ul>
                             </li>

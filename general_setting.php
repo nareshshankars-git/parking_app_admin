@@ -1,5 +1,5 @@
 <?php
-$page_name="Staff Add";
+$page_name="General Setting";
 function main() {
 	$error="";
 	$name="";
