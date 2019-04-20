@@ -9,7 +9,7 @@ class db_helper extends db_query{
 			return 0;
 	}
 	function get_current_staff_user(){
-		$data=$this->select_query("login_history a, users b","b.id,b.name,b.user_name","b.id=a.user_id and logout_datetime is null",[],"ORDER BY `id` DESC");
+		$data=$this->select_query("login_history a, users b","b.id,b.name,b.user_name","b.id=a.user_id and a.logout_datetime is null",[],"ORDER BY a.login_datetime DESC");
 		if(count($data)>0)
 			return $data[0]["name"]." (".$data[0]["user_name"].")";
 		else

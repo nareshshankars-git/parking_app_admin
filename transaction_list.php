@@ -114,7 +114,7 @@ function main() {
 						  <td><?php echo get_date_format($row["check_in"]); ?></td>
 						  <td><?php if(isset($row["check_in_transaction"])) echo $trans_type[$row["check_in_transaction"]]; ?></td>
 						  <td><?php if(isset($row["check_out"])) echo get_date_format($row["check_out"]); ?></td>
-						  <td><?php if(isset($row["check_out_transaction"])) echo $trans_type[$row["check_out_transaction"]]; ?></td>
+						  <td><?php if(isset($row["check_out"])) echo $trans_type[$row["check_out_transaction"]]; ?></td>
 						  <td><?php if($row["amount"])echo $row["amount"]." (".$row["slot_count"].")"; ?></td>
 						</tr>
 					<?php } }else{ ?>
