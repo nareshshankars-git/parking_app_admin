@@ -241,7 +241,7 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function get_monthly_pass($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,f.month,f.updated_datetime,f.status","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,f.month,f.updated_datetime,f.status,f.pass_no","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function get_montly_pass_details($id){
@@ -264,8 +264,26 @@ class db_helper extends db_query{
 		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
+	function get_transaction_by_id($id){
+		$data= $this->select_query("check_in_out_log","*","id=?",[$id]);
+		if(isset($data[0]))
+			return $data[0];
+		else
+			return [];
+	}
+	function delete_transaction($id){
+		$where="id =:id";
+		return $this->delete_query("check_in_out_log",$where,array('id'=>$id));
+	}
+	function add_transaction_cancel($insr_array){
+		return $this->insert_query("check_in_out_log_cancel",$insr_array);
+	}
 	function get_trans_details($id){
 		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and f.id=?",[$id]);
+		return $data;
+	}
+	function get_out_cancel_details($id){
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,check_in_out_log_cancel f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,e.color,f.token_no,f.check_in,f.check_out,f.check_out_transaction,f.check_in_transaction,f.slot_count,f.amount","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and f.id=?",[$id]);
 		return $data;
 	}
 	function get_check_in_list($where,$where_array,$sort_by=""){

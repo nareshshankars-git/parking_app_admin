@@ -16,7 +16,7 @@
     
     //processing form input
     //remember to sanitize user input in real-life solution !!!
-    $errorCorrectionLevel = 'L';
+    $errorCorrectionLevel = 'H';
       
 
     $matrixPointSize = 4;

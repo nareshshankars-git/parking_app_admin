@@ -62,6 +62,24 @@ if(isset($_GET['trans_for_id']) && $_GET['trans_for_id']!=""){
 			$data["Created Date Time"]=get_date_format($row["created_datetime"]);
 			
 		}
+	}else if($_GET['trans_from']==6){
+		$result=$db_helper_obj->get_out_cancel_details($_GET['trans_for_id']);
+		if(isset($result[0])){
+			$row=$result[0];
+			$data["Token No"]='<span class="badge badge-'.$row["color"].'">'.$row["token_no"].'</span>';
+			$data["Vehicle No"]=get_veh_no($row);
+			$data["Make Model"]=$row["model"];
+			$data["Slot Name"]=$row["slot_name"];
+			$data["Customer"]=$row["mobile_number"];
+			if($row["name"]) 
+				$data["Customer"].="(".$row["name"].")";
+			$data["Check In"]=get_date_format($row["check_in"]);
+			$data["Check In Transaction"]=$trans_type[$row["check_in_transaction"]];
+			$data["Check Out"]=get_date_format($row["check_out"]);
+			$data["Check Out Transaction"]=$trans_type[$row["check_out_transaction"]];
+			$data["Amount"]=$row["amount"];
+			$data["Slot Count"]=$row["slot_count"];
+		}
 	}
 ?>
 <table class="table dataTable"  cellspacing="0" >

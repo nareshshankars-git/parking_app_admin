@@ -91,6 +91,7 @@ function main() {
 						<th>S.No</th>
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Customer</a></th>
 						<th>Vehicle No</th>
+						<th>Pass No</th>
 						<th class="<?php echo get_sort_class("model");?>"><a href="<?php echo get_sort_url("model"); ?> ">Make Model</a></th>
 						<th class="<?php echo get_sort_class("slot_name");?>"><a href="<?php echo get_sort_url("slot_name"); ?> ">Default Slot</a></th>
 						<th class="<?php echo get_sort_class("month");?>"><a href="<?php echo get_sort_url("month"); ?> ">Renewaled Month</a></th>
@@ -105,6 +106,7 @@ function main() {
 						  <td><?php echo $cnt; ?></td>
 						  <td><?php echo $row["mobile_number"];if($row["name"]) echo "(".$row["name"].")"; ?></td>
 						  <td><?php echo get_veh_no($row); ?></td>
+						  <td><?php echo $row["pass_no"]; ?></td>
 						  <td><?php echo $row["model"]; ?></td>
 						  <td><?php echo $row["slot_name"]; ?></td>
 						  <td><?php echo get_month($row["month"]); ?></td>

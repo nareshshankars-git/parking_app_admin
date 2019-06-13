@@ -16,7 +16,18 @@ function main() {
 	$where_arr=array();
 	$page_url_form="";
 	// Search condition ==========================> Starts
-	
+	if(isset($_REQUEST['date']) && $_REQUEST['date']!=""){
+		$arr= explode("-",$_REQUEST['date']);
+		$from_date=trim($arr[0]);
+		$to_date=trim($arr[1]);
+		$to_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $to_date)));
+		$from_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $from_date)));
+		$where.=" and (created_datetime >=? and  created_datetime <=?)";
+		$where_arr[]=$from_date;
+		$where_arr[]=$to_date;
+		$page_url_form.="&date=".$_REQUEST['date'];
+	}
+	// Search condition ==========================> Ends
 	$transaction_list=$db_helper_obj->get_audit_list($where,$where_arr,$sort_by); // getting all the users data
 	$get_total_rows = count($transaction_list);
 	
@@ -35,17 +46,7 @@ function main() {
         <div class="card-body">
 			<form name="search_form" method="get">
 				<div class="form-row">
-					<div class="col-md-3 ">
-                    <label for="name_id">Cust Name/ Mobile No</label>
-					<input name="name" type="text" class="form-control" id="name_id" placeholder="Name \ Mobile Number" value="<?php echo form_search('name')?>">
-					 
-                    </div> 
-                    <div class="col-md-3 ">
 					
-                    <label for="name_id">Vehicle Number</label>
-					<input name="veh_no" type="text" class="form-control" id="name_id" placeholder="Vehicle Number" value="<?php echo form_search('veh_no')?>">
-					 
-                    </div> 
 					<div class="col-md-4 ">
 					
                     <label for="name_id">Date Range</label>
@@ -124,4 +125,32 @@ function main() {
 <?php }
 include 'template-admin.php';
 ?>
- 
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+ <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
+ <script type="text/javascript">
+      $(document).ready(function() {
+		  var  options={"timePicker": true,'locale':{}};
+		  options.locale = {
+              direction: 'ltr',
+              format: 'YYYY/MM/DD @ h:mm A',
+              separator: ' - ',
+              applyLabel: 'Apply',
+              cancelLabel: 'Cancel',
+              fromLabel: 'From',
+              toLabel: 'To',
+              customRangeLabel: 'Custom',
+              daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+              monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+              firstDay: 1
+            };
+			$('#config-demo').daterangepicker(options);
+			<?php $date="";
+			if(isset($_REQUEST['date']) && $_REQUEST['date']!="")
+				$date=$_REQUEST['date']; ?>
+			
+			$('#config-demo').val('<?php echo $date; ?>');
+	  });
+	  function add_notes(id){
+		  document.getElementById('trans_id').value=id;
+	  }
+	</script>

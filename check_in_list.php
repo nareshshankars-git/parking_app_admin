@@ -41,8 +41,8 @@ function main() {
 		$arr= explode("-",$_REQUEST['date']);
 		$from_date=trim($arr[0]);
 		$to_date=trim($arr[1]);
-		$from_date=str_replace("/", "-", $from_date)." 00:00:00";
-		$to_date=str_replace("/", "-", $to_date)." 23:59:59";
+		$to_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $to_date)));
+		$from_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $from_date)));
 		$where.=" and (f.last_updated >=? and  f.last_updated <=?)";
 		$where_arr[]=$from_date;
 		$where_arr[]=$to_date;
@@ -185,7 +185,7 @@ include 'template-admin.php';
       <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
  <script type="text/javascript">
       $(document).ready(function() {
-		  var  options={"timePicker": true,'locale':{}};
+		  var  options={"timePicker": true,autoUpdateInput: false,'locale':{}};
 		  options.locale = {
               direction: 'ltr',
               format: 'YYYY/MM/DD @ h:mm A',

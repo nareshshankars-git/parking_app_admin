@@ -33,8 +33,8 @@ function main() {
 		$arr= explode("-",$_REQUEST['date']);
 		$from_date=trim($arr[0]);
 		$to_date=trim($arr[1]);
-		$from_date=str_replace("/", "-", $from_date)." 00:00:00";
-		$to_date=str_replace("/", "-", $to_date)." 23:59:59";
+		$to_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $to_date)));
+		$from_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $from_date)));
 		$where.=" and (g.created_datetime >=? and  g.created_datetime <=?)";
 		$where_arr[]=$from_date;
 		$where_arr[]=$to_date;
@@ -148,7 +148,7 @@ include 'template-admin.php';
       <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
  <script type="text/javascript">
       $(document).ready(function() {
-		  var  options={"timePicker": true,'locale':{}};
+		  var  options={"timePicker": true,autoUpdateInput: false,'locale':{}};
 		  options.locale = {
               direction: 'ltr',
               format: 'YYYY/MM/DD @ h:mm A',
@@ -162,11 +162,12 @@ include 'template-admin.php';
               monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
               firstDay: 1
             };
-			$('#config-demo').daterangepicker(options);
-			<?php $date="";
-			if(isset($_REQUEST['date']) && $_REQUEST['date']!="")
-				$date=$_REQUEST['date']; ?>
-			
-			$('#config-demo').val('<?php echo $date; ?>');
+			$('#config-demo').daterangepicker(options, function(start, end, label) { //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+			//console.log(label);
+			 $('#config-demo').val(start.format('YYYY/MM/DD @ hh:mm:ss')+' - '+end.format('YYYY/MM/DD @ hh:mm:ss'));
+			});
+			$('#config-demo').on('cancel.daterangepicker', function(ev, picker) {
+				$('#config-demo').val('');
+			});
 	  });
 	</script>

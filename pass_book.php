@@ -21,8 +21,8 @@ function main() {
 		$arr= explode("-",$_REQUEST['date']);
 		$from_date=trim($arr[0]);
 		$to_date=trim($arr[1]);
-		$from_date=str_replace("/", "-", $from_date)." 00:00:00";
-		$to_date=str_replace("/", "-", $to_date)." 23:59:59";
+		$to_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $to_date)));
+		$from_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $from_date)));
 		$where.=" and (a.created_datetime >=? and  a.created_datetime <=?)";
 		$where_arr[]=$from_date;
 		$where_arr[]=$to_date;
@@ -99,7 +99,7 @@ function main() {
 					<div class="col-md-4 ">
 					
                     <label for="name_id">Date Range</label>
-					 <input name="date" value="<?php echo form_search('date')?>" type="text" id="config-demo" class="form-control">
+					 <input autocomplete="off" name="date" value="<?php echo form_search('date')?>" type="text" id="config-demo" class="form-control">
 					 
                     </div>
 					
@@ -184,13 +184,13 @@ include 'template-admin.php';
 <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
 <script type="text/javascript">
       $(document).ready(function() {
-		  var  options={"timePicker": true,'locale':{}};
+		  var  options={"timePicker": true,  autoUpdateInput: false,'locale':{}};
 		  options.locale = {
               direction: 'ltr',
-              format: 'YYYY/MM/DD @ h:mm A',
+              format: 'YYYY/MM/DD @ hh:mm:ss',
               separator: ' - ',
               applyLabel: 'Apply',
-              cancelLabel: 'Cancel',
+              cancelLabel: 'Clear',
               fromLabel: 'From',
               toLabel: 'To',
               customRangeLabel: 'Custom',
@@ -198,6 +198,12 @@ include 'template-admin.php';
               monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
               firstDay: 1
             };
-			$('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
+			$('#config-demo').daterangepicker(options, function(start, end, label) { //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+			//console.log(label);
+			 $('#config-demo').val(start.format('YYYY/MM/DD @ hh:mm:ss')+' - '+end.format('YYYY/MM/DD @ hh:mm:ss'));
+			});
+			$('#config-demo').on('cancel.daterangepicker', function(ev, picker) {
+				$('#config-demo').val('');
+			});
 	  });
 	</script>

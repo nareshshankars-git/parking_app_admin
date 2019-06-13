@@ -1,10 +1,41 @@
 <?php
 $page_name="Transaction List";
 include("core/pagination/pagination.php");
-
 function main() {
-	$trans_type=array(1=>'Print',2=>'SMS',3=>'WhatsApp',4=>'Audit');
 	global $db_helper_obj;
+	if(isset($_GET['id']) && isset($_GET['action']) && $_GET['id']!="" ){
+		$data=$db_helper_obj->get_transaction_by_id($_GET['id']);
+		if(count($data)>0){
+			$ins_arr=$data;
+			$ins_arr["log_id"]=$data["id"];
+			unset($ins_arr['id']);
+			$new_id=$db_helper_obj->add_transaction_cancel($ins_arr);
+			if($_GET['action']=="cancel_in"){
+				$db_helper_obj->delete_transaction($data["id"]);
+				set_success_msg('Cancelled Check In Successfully');
+			}else{
+				$upd_arr=array();
+				$upd_arr['check_out']=0;
+				$upd_arr['slot_count']=0;
+				$upd_arr['amount']=0;
+				$upd_arr['check_out_transaction']=0;
+				$upd_arr['last_updated']=date("Y-m-d H:i:s",time());
+				$db_helper_obj->update_check_in_out_log($upd_arr,$data["id"]);
+				$ins_trans=array();
+				$ins_trans['amount']=$data['amount'];
+				$ins_trans['trans_from']=6;
+				$ins_trans['trans_type']=2;
+				$ins_trans['trans_for_id']=$new_id;
+				$ins_trans["created_datetime"]=date("Y-m-d H:i:s",time());
+				$ins_trans["created_by"]=$_SESSION["user_id"];
+				$db_helper_obj->add_transaction($ins_trans);
+				set_success_msg('Cancelled Check Out Successfully');
+			}
+			header("location: transaction_list.php");
+			exit();
+		}
+	}
+	$trans_type=array(1=>'Print',2=>'SMS',3=>'WhatsApp',4=>'Audit');
 	// Pagination 
 	$item_per_page=10;
 	$page_number=get_page_no();
@@ -33,8 +64,8 @@ function main() {
 		$arr= explode("-",$_REQUEST['date']);
 		$from_date=trim($arr[0]);
 		$to_date=trim($arr[1]);
-		$from_date=str_replace("/", "-", $from_date)." 00:00:00";
-		$to_date=str_replace("/", "-", $to_date)." 23:59:59";
+		$to_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $to_date)));
+		$from_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $from_date)));
 		$where.=" and (f.last_updated >=? and  f.last_updated <=?)";
 		$where_arr[]=$from_date;
 		$where_arr[]=$to_date;
@@ -97,10 +128,9 @@ function main() {
 						<th class="<?php echo get_sort_class("slot_name");?>"><a href="<?php echo get_sort_url("slot_name"); ?> ">Slot Name</a></th>
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Customer</a></th>
 						<th class="<?php echo get_sort_class("check_in");?>"><a href="<?php echo get_sort_url("check_in"); ?> ">Check In</a></th>
-						<th>Check In Transaction</th>
 						<th class="<?php echo get_sort_class("check_out");?>"><a href="<?php echo get_sort_url("check_out"); ?> ">Check Out</a></th>
-						<th>Check Out Transaction</th>
 						<th >Amount (Slot)</th>
+						<th >Action</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -111,11 +141,11 @@ function main() {
 						  <td><span class="badge badge-<?php if(isset($row["check_out"])) echo 'success'; else echo 'danger'; ?>"><?php echo $row["model"]; ?></span></td>
 						  <td><?php echo $row["slot_name"]; ?></td>
 						  <td><?php echo $row["mobile_number"];if($row["name"]) echo "(".$row["name"].")"; ?></td>
-						  <td><?php echo get_date_format($row["check_in"]); ?></td>
-						  <td><?php if(isset($row["check_in_transaction"])) echo $trans_type[$row["check_in_transaction"]]; ?></td>
-						  <td><?php if(isset($row["check_out"])) echo get_date_format($row["check_out"]); ?></td>
-						  <td><?php if(isset($row["check_out"])) echo $trans_type[$row["check_out_transaction"]]; ?></td>
+						  <td><?php echo get_date_format($row["check_in"]);  if(isset($row["check_in_transaction"])) echo " - (".$trans_type[$row["check_in_transaction"]].
+					")"; ?></td>
+						  <td><?php if(isset($row["check_out"])) echo get_date_format($row["check_out"]); if(isset($row["check_out"])) echo " - (".$trans_type[$row["check_out_transaction"]].")"; ?></td>
 						  <td><?php if($row["amount"])echo $row["amount"]." (".$row["slot_count"].")"; ?></td>
+						  <td><?php if(isset($row["check_out"])) echo '<a title="Cancel Check Out" href="?action=cancel_out&id='.$row['id'].'" class="btn btn-danger  btn-xs mb-3" ><i class="fa fa-ban" aria-hidden="true"></i> Check Out</a>'; else echo '<a title="Cancel Check In"	href="?action=cancel_in&id='.$row['id'].'"					  class="btn btn-danger  btn-xs mb-3" ><i class="fa fa-ban" aria-hidden="true"></i> Check In</a>'; ?></td>
 						</tr>
 					<?php } }else{ ?>
                   <tr>
@@ -147,7 +177,7 @@ include 'template-admin.php';
       <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
  <script type="text/javascript">
       $(document).ready(function() {
-		  var  options={"timePicker": true,'locale':{}};
+		  var  options={"timePicker": true,autoUpdateInput: false,'locale':{}};
 		  options.locale = {
               direction: 'ltr',
               format: 'YYYY/MM/DD @ h:mm A',
@@ -161,11 +191,13 @@ include 'template-admin.php';
               monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
               firstDay: 1
             };
-			$('#config-demo').daterangepicker(options);
-			<?php $date="";
-			if(isset($_REQUEST['date']) && $_REQUEST['date']!="")
-				$date=$_REQUEST['date']; ?>
-			
-			$('#config-demo').val('<?php echo $date; ?>');
+			$('#config-demo').daterangepicker(options, function(start, end, label) { //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+			//console.log(label);
+			 $('#config-demo').val(start.format('YYYY/MM/DD @ hh:mm:ss')+' - '+end.format('YYYY/MM/DD @ hh:mm:ss'));
+			});
+			$('#config-demo').on('cancel.daterangepicker', function(ev, picker) {
+				$('#config-demo').val('');
+			});
+
 	  });
 	</script>
