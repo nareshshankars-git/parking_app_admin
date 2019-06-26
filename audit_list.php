@@ -129,7 +129,7 @@ include 'template-admin.php';
  <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
  <script type="text/javascript">
       $(document).ready(function() {
-		  var  options={"timePicker": true,'locale':{}};
+		  var  options={"timePicker": true,autoUpdateInput: false,'locale':{}};
 		  options.locale = {
               direction: 'ltr',
               format: 'YYYY/MM/DD @ h:mm A',
@@ -143,12 +143,13 @@ include 'template-admin.php';
               monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
               firstDay: 1
             };
-			$('#config-demo').daterangepicker(options);
-			<?php $date="";
-			if(isset($_REQUEST['date']) && $_REQUEST['date']!="")
-				$date=$_REQUEST['date']; ?>
-			
-			$('#config-demo').val('<?php echo $date; ?>');
+			$('#config-demo').daterangepicker(options, function(start, end, label) { //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+			//console.log(label);
+			 $('#config-demo').val(start.format('YYYY/MM/DD @ hh:mm:ss')+' - '+end.format('YYYY/MM/DD @ hh:mm:ss'));
+			});
+			$('#config-demo').on('cancel.daterangepicker', function(ev, picker) {
+				$('#config-demo').val('');
+			});
 	  });
 	  function add_notes(id){
 		  document.getElementById('trans_id').value=id;

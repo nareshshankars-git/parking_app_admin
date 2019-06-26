@@ -15,7 +15,7 @@ function main() {
 				set_success_msg('Cancelled Check In Successfully');
 			}else{
 				$upd_arr=array();
-				$upd_arr['check_out']=0;
+				$upd_arr['check_out']=null;
 				$upd_arr['slot_count']=0;
 				$upd_arr['amount']=0;
 				$upd_arr['check_out_transaction']=0;

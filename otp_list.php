@@ -168,6 +168,6 @@ include 'template-admin.php';
 			});
 			$('#config-demo').on('cancel.daterangepicker', function(ev, picker) {
 				$('#config-demo').val('');
-			});
+			});
 	  });
 	</script>
