@@ -16,7 +16,7 @@ class db_helper extends db_query{
 			return "";
 	}
 	function get_dashboard_data(){
-		$data= $this->select_query("check_in_out_log","count(id) as vehicle_in,(SELECT count(id) FROM `customer`where 1) as customer,(SELECT count(id) FROM `monthly_pass` where month=".date('m') .") as monthly_pass_active,(SELECT count(id) FROM `monthly_pass` where 1) as monthly_pass,(SELECT count(id) FROM `vehicle`where 1) as vehicle,(SELECT balance FROM `money_in_out` ORDER BY `id` DESC limit 0,1) as balance,(SELECT sum(amount) FROM `money_in_out` where trans_from=2 and created_datetime>-'".date("Y-m-d")." 00:00:00' and created_datetime<='".date("Y-m-d")." 23:59:59') as expense,(SELECT sum(amount) FROM `money_in_out` where trans_from=3 and created_datetime>-'".date("Y-m-d")." 00:00:00' and created_datetime<='".date("Y-m-d")." 23:59:59') as cash_recv","check_out is null",[],"");
+		$data= $this->select_query("check_in_out_log","count(id) as vehicle_in,(SELECT count(id) FROM `customer`where 1) as customer,(SELECT count(id) FROM `monthly_pass` where status=1) as monthly_pass_active,(SELECT count(id) FROM `monthly_pass` where 1) as monthly_pass,(SELECT count(id) FROM `vehicle`where 1) as vehicle,(SELECT balance FROM `money_in_out` ORDER BY `id` DESC limit 0,1) as balance,(SELECT sum(amount) FROM `money_in_out` where trans_from=2 and created_datetime>-'".date("Y-m-d")." 00:00:00' and created_datetime<='".date("Y-m-d")." 23:59:59') as expense,(SELECT sum(amount) FROM `money_in_out` where trans_from=3 and created_datetime>-'".date("Y-m-d")." 00:00:00' and created_datetime<='".date("Y-m-d")." 23:59:59') as cash_recv","check_out is null",[],"");
 		if(count($data)>0)
 			return $data[0];
 		else
