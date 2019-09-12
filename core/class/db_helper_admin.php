@@ -98,6 +98,10 @@ class db_helper extends db_query{
 	function update_setting($upd_arr,$id){
 		$where="id =:id";
 		return $this->update_query("settings",$upd_arr,$where,array('id'=>$id));
+	}	
+	function update_password($upd_arr){
+		$where="id =:id";
+		return $this->update_query("users",$upd_arr,$where,array('id'=>1));
 	}
 	function get_general_setting(){
 		$data= $this->select_query("settings","*",1,array());
