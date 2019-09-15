@@ -17,8 +17,8 @@ function main() {
 	// Search condition ==========================> Starts
 	if(isset($_REQUEST['name']) && $_REQUEST['name']!=""){
 		$where.=" and ( a.name like ? or a.mobile_number like ?)";
-		$where_arr[]=$_REQUEST['name']."%";
-		$where_arr[]=$_REQUEST['name']."%";
+		$where_arr[]="%".$_REQUEST['name']."%";
+		$where_arr[]="%".$_REQUEST['name']."%";
 		$page_url_form.="&name=".$_REQUEST['name'];
 	}
 	if(isset($_REQUEST['veh_no']) && $_REQUEST['veh_no']!=""){
@@ -91,7 +91,7 @@ function main() {
 						<th>S.No</th>
 						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Customer</a></th>
 						<th>Vehicle No</th>
-						<th>Pass No</th>
+						<th class="<?php echo get_sort_class("pass_no");?>"><a href="<?php echo get_sort_url("pass_no"); ?> ">Pass No</a></th>
 						<th class="<?php echo get_sort_class("model");?>"><a href="<?php echo get_sort_url("model"); ?> ">Make Model</a></th>
 						<th class="<?php echo get_sort_class("slot_name");?>"><a href="<?php echo get_sort_url("slot_name"); ?> ">Default Slot</a></th>
 						<th class="<?php echo get_sort_class("month");?>"><a href="<?php echo get_sort_url("month"); ?> ">Renewaled Month</a></th>
