@@ -178,7 +178,7 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function cash_on_hand_list($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("money_in_out","id,amount,created_datetime",$where,$where_array,$sort_by);
+		$data= $this->select_query("cash_on_hand","id,amount,created_datetime",$where,$where_array,$sort_by);
 		return $data;
 	}
 	function get_coh_by_id($id){

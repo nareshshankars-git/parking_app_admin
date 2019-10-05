@@ -69,7 +69,7 @@
 			return $_REQUEST[$value];
 	}
 	function form_search_select($id,$value){
-		if(isset($_REQUEST[$value]) && $_REQUEST[$value]==$id)
+		if(isset($_REQUEST[$value]) && $_REQUEST[$value]!='' && $_REQUEST[$value]==$id)
 			echo 'selected="selected"';
 	}
 	function get_veh_no($data){

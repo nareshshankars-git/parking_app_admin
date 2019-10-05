@@ -29,7 +29,7 @@ function main() {
 		$page_url_form.="&veh_no=".$_REQUEST['veh_no'];
 	}	
 	if(isset($_REQUEST['status']) && $_REQUEST['status']!=""){
-		$where.=" and ( f.status)";
+		$where.=" and f.status=?";
 		$where_arr[]=$_REQUEST['status'];
 		$page_url_form.="&status=".$_REQUEST['status'];
 	}
