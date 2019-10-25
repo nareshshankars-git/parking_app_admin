@@ -55,6 +55,15 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
     border: 1px solid transparent;
     border-radius: 2px;
 }
+.modal-body {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1rem;
+]   overflow-y: scroll;
+    height: 400px;
+}
 	</style>
 </head>
 
