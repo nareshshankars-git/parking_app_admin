@@ -35,7 +35,7 @@ if(isset($_GET['id']) && $_GET['id']!=""){
 	</tr>
 <?php } }else{ ?>
 <tr>
-<td colspan="3"><div align="center">No Renewal History</div></td>
+<td colspan="3"><div align="center">No  History</div></td>
 </tr>
 <?php } ?>
 </tbody>

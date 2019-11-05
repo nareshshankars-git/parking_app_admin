@@ -8,9 +8,10 @@ function main() {
 	$alpha="";
 	$reg_no="";
 	$slot_id="";
-	$action="Submit";
+	$action="Update";
 	global $db_helper_obj;
-	if(isset($_POST["Submit"]) || isset($_POST["Update"])){ 
+	
+	if(isset($_POST["Update"])){ 
 		$status=0;
 		extract($_POST);
 		include("core/class/validation_class.php");
@@ -27,7 +28,6 @@ function main() {
 	$val->run();
 	$validation_error=array();
 	$validation_error=$val->errors;
-	//print_r($validation_error);
 	if((count($validation_error)==0 )){ // checking the validation errors
 		if(isset($_POST["Update"]) && isset($_GET["id"])){
 			$upd_veh=array();
@@ -74,7 +74,7 @@ function main() {
 <div class="container-fluid">
 
 	<div class="card mb-3">
-        <div class="card-header">Slot Add Form</div>  
+        <div class="card-header">Vehicle Edit Form</div>  
 	<div class="card-body">
 		<?php if($error){ 
 		 ?>
