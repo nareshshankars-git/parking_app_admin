@@ -83,7 +83,7 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
                 </div>
             </div>
             <div class="main-menu">
-                <div class="menu-inner">
+                <div class="menu-inner" style="overflow-y:auto;">
                     <nav>
                         <ul class="metismenu" id="menu">
                             <li class="<?php echo get_menu_active('dashboard.php'); ?>">
@@ -215,7 +215,7 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/metisMenu.min.js"></script>
-    <script src="assets/js/jquery.slimscroll.min.js"></script>
+    
     <script src="assets/js/jquery.slicknav.min.js"></script>
 
     <!-- others plugins -->
