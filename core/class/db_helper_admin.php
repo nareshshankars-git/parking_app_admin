@@ -224,8 +224,13 @@ class db_helper extends db_query{
 		$where="id =:id";
 		return $this->update_query("vehicle",$upd_arr,$where,array('id'=>$id));
 	}
+	function delete_vehicle($id){
+		$upd_arr=array('del_status'=>1);
+		$where="id =:id";
+		return $this->update_query("vehicle",$upd_arr,$where,array('id'=>$id));
+	}
 	function get_vehicle_list($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b","b.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name","a.id=b.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=b.slot_id and ".$where,$where_array,$sort_by);
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b","b.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,b.del_status","a.id=b.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=b.slot_id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function get_expense_list($where="1",$where_array,$sort_by=""){

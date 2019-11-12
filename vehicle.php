@@ -3,6 +3,12 @@ $page_name="Vehicle";
 include("core/pagination/pagination.php");
 function main() {
 	global $db_helper_obj;
+	if(isset($_GET["action"]) && $_GET["action"]="delete" && isset($_GET["id"]) && $_GET["id"]!=""){
+		$db_helper_obj->delete_vehicle($_GET["id"]);
+		set_success_msg('Vehicle Deleted Successfully');
+		header("location:vehicle.php");
+		exit();
+	}
 	// Pagination 
 	$item_per_page=10;
 	$page_number=get_page_no();
@@ -49,6 +55,7 @@ function main() {
         <div class="card-header">
           Vehicle List</div>
         <div class="card-body">
+		<?php echo get_success_alert();?>
 			<form name="search_form" method="get">
 				<div class="form-row">
 					<div class="col-md-4">
@@ -104,8 +111,11 @@ function main() {
 						  <td><?php echo get_veh_no($row); ?></td>
 						  <td><?php echo $row["model"]; ?></td>
 						  <td><?php echo $row["slot_name"]; ?></td>
-						  <td><a href="vehicle_edit.php?id=<?php echo $row["id"]; ?>" title="Edit">   <i class="fa fa-pencil"></i></a>
-							&nbsp;&nbsp;&nbsp;<button onclick="call_ajax_url('trnsc_hstry','trnsc_content','id=<?php echo $row['id']; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#trans_list_modal">Transaction History</button></td>
+						  <td>
+						  <?php if($row["del_status"]==0){?><a href="vehicle_edit.php?id=<?php echo $row["id"]; ?>"  title="Edit">   <i class="fa fa-pencil"></i></a>
+							&nbsp;&nbsp;&nbsp;<a onclick="if(!confirm('Are you sure want to delete?')) return false;" href="vehicle.php?id=<?php echo $row["id"]; ?>&action=delete" title="Edit">   <i class="fa fa-trash"></i></a>
+							&nbsp;&nbsp;&nbsp;
+					<?php } else{?> <span class="badge badge-danger">Deleted</span>&nbsp;&nbsp;&nbsp;<?php }?><button onclick="call_ajax_url('trnsc_hstry','trnsc_content','id=<?php echo $row['id']; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#trans_list_modal">Transaction History</button></td>
 						  
 						</tr>
 					<?php } }else{ ?>
