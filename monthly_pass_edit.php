@@ -11,6 +11,8 @@ function main() {
 	if(isset($_POST["Submit"]) || isset($_POST["Update"])){ 
 		$status=0;
 		extract($_POST);
+		if(isset($_POST["Update"]))
+			$action="Update";
 		include("core/class/validation_class.php");
 	// setting rule for validation
 	$rules_array = array(
@@ -56,6 +58,7 @@ function main() {
 		if((count($validation_error)==0 )){
 			if($data=$db_helper_obj->get_mnt_pass_by_id($_GET["id"])){
 				extract($data);
+				
 				$action="Update";
 			}else
 				$error="Invalid Data";
@@ -65,6 +68,7 @@ function main() {
 	$slot_data=$db_helper_obj->get_mont_slots();
 
 	?>
+	
 <div class="container-fluid">
 
 	<div class="card mb-3">

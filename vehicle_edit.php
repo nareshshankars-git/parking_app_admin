@@ -18,7 +18,7 @@ function main() {
 	// setting rule for validation
 	$rules_array = array(
 		'city'=>array('type'=>'number','required'=>true,'min'=>1 , 'max'=>99,'trim'=>true,'error-msg'=>"Please enter the valid City"),
-		'reg_no'=>array('type'=>'number','required'=>true,'trim'=>true,'error-msg'=>"Please enter the reg no"),
+		'reg_no'=>array('type'=>'string','required'=>true,'min'=>1 , 'max'=>9999,'trim'=>true,'error-msg'=>"Please enter the reg no"),
 		
 	);
 
@@ -28,6 +28,7 @@ function main() {
 	$val->run();
 	$validation_error=array();
 	$validation_error=$val->errors;
+	//print_r($validation_error);
 	if((count($validation_error)==0 )){ // checking the validation errors
 		if(isset($_POST["Update"]) && isset($_GET["id"])){
 			$upd_veh=array();

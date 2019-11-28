@@ -19,6 +19,7 @@ function main() {
 
 	if(isset($_REQUEST['date']) && $_REQUEST['date']!=""){
 		$arr= explode("-",$_REQUEST['date']);
+		
 		$from_date=trim($arr[0]);
 		$to_date=trim($arr[1]);
 		$to_date=date("Y-m-d H:i:s", strtotime(str_replace("@", "", $to_date)));
@@ -184,7 +185,7 @@ include 'template-admin.php';
 <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
 <script type="text/javascript">
       $(document).ready(function() {
-		  var  options={"timePicker": true,  autoUpdateInput: false,'locale':{}};
+		  var  options={"timePicker": true,"timePicker24Hour":true, autoUpdateInput: false,'locale':{}};
 		  options.locale = {
               direction: 'ltr',
               format: 'YYYY/MM/DD @ hh:mm:ss',
@@ -196,11 +197,11 @@ include 'template-admin.php';
               customRangeLabel: 'Custom',
               daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
               monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-              firstDay: 1
+              firstDay: 1,
             };
-			$('#config-demo').daterangepicker(options, function(start, end, label) { //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+			$('#config-demo').daterangepicker(options, function(start, end, label) { //console.log('New date range selected: ' + start.format('YYYY-MM-DD HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD HH:mm:ss') + ' (predefined range: ' + label + ')');
 			//console.log(label);
-			 $('#config-demo').val(start.format('YYYY/MM/DD @ hh:mm:ss')+' - '+end.format('YYYY/MM/DD @ hh:mm:ss'));
+			 $('#config-demo').val(start.format('YYYY/MM/DD @ HH:mm:ss')+' - '+end.format('YYYY/MM/DD @ HH:mm:ss'));
 			});
 			$('#config-demo').on('cancel.daterangepicker', function(ev, picker) {
 				$('#config-demo').val('');

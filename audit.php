@@ -232,7 +232,7 @@ include 'template-admin.php';
       <script type="text/javascript" src="assets/vendor/daterange/daterangepicker.js"></script>
  <script type="text/javascript">
       $(document).ready(function() {
-		  var  options={"timePicker": true,'locale':{}};
+		  var  options={"timePicker": true,"timePicker24Hour":true,'locale':{}};
 		  options.locale = {
               direction: 'ltr',
               format: 'YYYY/MM/DD @ h:mm A',

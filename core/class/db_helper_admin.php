@@ -254,7 +254,7 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function get_montly_pass_details($id){
-		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f,monthly_pass_renewal g","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,g.month,g.amount,g.created_datetime","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and g.pass_id=f.id and g.id=?",[$id]);
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f,monthly_pass_renewal g","f.id,f.pass_no,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,g.month,g.amount,g.created_datetime","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and g.pass_id=f.id and g.id=?",[$id]);
 		return $data;
 	}	
 	function get_mnt_pass_by_id($id){

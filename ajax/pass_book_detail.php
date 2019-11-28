@@ -59,6 +59,7 @@ if(isset($_GET['trans_for_id']) && $_GET['trans_for_id']!=""){
 			$data["Month"]=get_month($row["month"]);
 			$data["Amount"]=$row["amount"];
 			$data["Slot Name"]=$row["slot_name"];
+			$data["Pass No"]=$row["pass_no"];
 			$data["Created Date Time"]=get_date_format($row["created_datetime"]);
 			
 		}

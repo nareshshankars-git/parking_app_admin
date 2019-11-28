@@ -32,6 +32,8 @@ function main() {
 	$val->run();
 	$validation_error=array();
 	$validation_error=$val->errors;
+	if(isset($_POST["Update"]))
+		$action="Update";
 	//print_r($validation_error);
 	if((count($validation_error)==0 )){ // checking the validation errors
 		if(isset($_POST["Update"]) && isset($_GET["id"])){

@@ -15,7 +15,8 @@ function main() {
 		$rules_array = array(
 			'name'=>array('type'=>'string','required'=>true,'min'=>1 , 'max'=>50,'trim'=>true,'error-msg'=>"Please enter the valid code")
 		);
-
+	if(isset($_POST["Update"]))
+		$action="Update";
 	$val = new validation;
     $val->addSource($_POST);
 	$val->addRules($rules_array);
@@ -155,7 +156,6 @@ function main() {
 						  <td><?php echo $cnt; ?></td>
 						  <td><?php echo $row["name"]; ?></td>
 						  <td><?php if($row["del_status"]==0) echo '<span class="badge badge-success">Active</span>'; else echo '<span class="badge badge-danger">In Active</span>'; ?></td>
-						  <td>
 						 <td>
 						  	<a href="make_model.php?id=<?php echo $row["id"]; ?>"><i class="fa fa-pencil"></i></a>
 						 </td>

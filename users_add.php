@@ -26,7 +26,8 @@ function main() {
 	$val->run();
 	$validation_error=array();
 	$validation_error=$val->errors;
-	//print_r($validation_error);
+	if(isset($_POST["Update"]))
+		$action="Update";
 	if((count($validation_error)==0 )){ // checking the validation errors
 		if(isset($_POST["Update"]) && isset($_GET["id"])){
 			$ins_user=array();
@@ -53,21 +54,27 @@ function main() {
 			}else
 			$error="User Name Already Exist";
 		}
-	}else
+	}else{
+		if(isset($_GET["id"])){ 
+			if($data=$db_helper_obj->get_user($_GET["id"])){
+				$user_name=$data["user_name"];
+				$action="Update";
+			}else
+				$error="Invalid Data";
+		}
 		$error=$val->getErrorMsg();
-	}
-	else if(isset($_GET["id"])){ 
+	}}else if(isset($_GET["id"])){ 
 		include("core/class/validation_class.php");
 		// setting rule for validation
 		$rules_array = array(
 			'id'=>array('type'=>'number','required'=>true,'trim'=>true,'error-msg'=>"Invalid Id")
 		);
-		$val = new validation;
-		$val->addSource($_GET);
-		$val->addRules($rules_array);
-		$val->run();
+		$val1 = new validation;
+		$val1->addSource($_GET);
+		$val1->addRules($rules_array);
+		$val1->run();
 		$validation_error=array();
-		$validation_error=$val->errors;
+		$validation_error=$val1->errors;
 		if((count($validation_error)==0 )){
 			if($data=$db_helper_obj->get_user($_GET["id"])){
 				extract($data);
