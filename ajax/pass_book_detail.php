@@ -14,7 +14,7 @@ if(isset($_GET['trans_for_id']) && $_GET['trans_for_id']!=""){
 	$db_helper_obj=new db_helper();
 	$data=array();
 	$trans_type=array(1=>'Print',2=>'SMS',3=>'WhatsApp',4=>'Audit');
-	if($_GET['trans_from']==1){
+	if($_GET['trans_from']==1 || $_GET['trans_from']==7){
 		$result=$db_helper_obj->get_trans_details($_GET['trans_for_id']);
 		if(isset($result[0])){
 			$row=$result[0];
@@ -27,10 +27,12 @@ if(isset($_GET['trans_for_id']) && $_GET['trans_for_id']!=""){
 				$data["Customer"].="(".$row["name"].")";
 			$data["Check In"]=get_date_format($row["check_in"]);
 			$data["Check In Transaction"]=$trans_type[$row["check_in_transaction"]];
-			$data["Check Out"]=get_date_format($row["check_out"]);
-			$data["Check Out Transaction"]=$trans_type[$row["check_out_transaction"]];
-			$data["Amount"]=$row["amount"];
-			$data["Slot Count"]=$row["slot_count"];
+			if($_GET['trans_from']!=7){
+				$data["Check Out"]=get_date_format($row["check_out"]);
+				$data["Check Out Transaction"]=$trans_type[$row["check_out_transaction"]];
+				$data["Amount"]=$row["amount"];
+				$data["Slot Count"]=$row["slot_count"];
+			}
 		}
 	}else if($_GET['trans_from']==2){
 		$result=$db_helper_obj->get_expense_detail($_GET['trans_for_id']);

@@ -29,6 +29,7 @@ function main() {
 				$ins_trans["created_datetime"]=date("Y-m-d H:i:s",time());
 				$ins_trans["created_by"]=$_SESSION["user_id"];
 				$db_helper_obj->add_transaction($ins_trans);
+				$db_helper_obj->update_transaction(array('trans_from'=>7),$data["id"],1);
 				set_success_msg('Cancelled Check Out Successfully');
 			}
 			header("location: transaction_list.php");
@@ -145,7 +146,7 @@ function main() {
 					")"; ?></td>
 						  <td><?php if(isset($row["check_out"])) echo get_date_format($row["check_out"]); if(isset($row["check_out"])) echo " - (".$trans_type[$row["check_out_transaction"]].")"; ?></td>
 						  <td><?php if($row["amount"])echo $row["amount"]." (".$row["slot_count"].")"; ?></td>
-						  <td><?php if(isset($row["check_out"])) echo '<a title="Cancel Check Out" href="?action=cancel_out&id='.$row['id'].'" class="btn btn-danger  btn-xs mb-3" ><i class="fa fa-ban" aria-hidden="true"></i> Check Out</a>'; else echo '<a title="Cancel Check In"	href="?action=cancel_in&id='.$row['id'].'"					  class="btn btn-danger  btn-xs mb-3" ><i class="fa fa-ban" aria-hidden="true"></i> Check In</a>'; ?></td>
+						  <td><?php if(isset($row["check_out"])){  if($row["show_co_cancel"]=="")echo '<a title="Cancel Check Out" href="?action=cancel_out&id='.$row['id'].'" class="btn btn-danger  btn-xs mb-3" ><i class="fa fa-ban" aria-hidden="true"></i> Check Out</a>'; }else echo '<a title="Cancel Check In"	href="?action=cancel_in&id='.$row['id'].'"					  class="btn btn-danger  btn-xs mb-3" ><i class="fa fa-ban" aria-hidden="true"></i> Check In</a>'; ?></td>
 						</tr>
 					<?php } }else{ ?>
                   <tr>
