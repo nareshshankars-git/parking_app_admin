@@ -73,7 +73,8 @@ function main() {
 						  <td><?php echo $row["name"]; ?></td>
 						  <td><?php echo $row["mobile_number"]; ?></td>
 						  <td><?php echo $row["address"]; ?></td>
-						    <td><button onclick="call_ajax_url('cust_veh','cust_content','id=<?php echo $row['id']; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#cust_veh_modal">Vehicles</button>&nbsp;&nbsp;&nbsp;<button onclick="call_ajax_url('cust_trnsc_hstry','cust_transc_content','id=<?php echo $row['id']; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#cust_transc_modal">Transaction</button></td>
+						    <td><button onclick="call_ajax_url('cust_veh','cust_content','id=<?php echo $row['id']; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#cust_veh_modal">Vehicles</button>&nbsp;&nbsp;&nbsp;
+							<a target="_blank" href="cust_veh_transaction.php?id=<?php echo $row['id']; ?>"  class="btn btn-primary  btn-xs mb-3" >Transaction History</a></td>
 						  
 						</tr>
 					<?php } }else{ ?>

@@ -115,7 +115,7 @@ function main() {
 						  <?php if($row["del_status"]==0){?><a href="vehicle_edit.php?id=<?php echo $row["id"]; ?>"  title="Edit">   <i class="fa fa-pencil"></i></a>
 							&nbsp;&nbsp;&nbsp;<a onclick="if(!confirm('Are you sure want to delete?')) return false;" href="vehicle.php?id=<?php echo $row["id"]; ?>&action=delete" title="Edit">   <i class="fa fa-trash"></i></a>
 							&nbsp;&nbsp;&nbsp;
-					<?php } else{?> <span class="badge badge-danger">Deleted</span>&nbsp;&nbsp;&nbsp;<?php }?><button onclick="call_ajax_url('trnsc_hstry','trnsc_content','id=<?php echo $row['id']; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#trans_list_modal">Transaction History</button></td>
+					<?php } else{?> <span class="badge badge-danger">Deleted</span>&nbsp;&nbsp;&nbsp;<?php }?><a target="_blank" href="transaction_history.php?id=<?php echo $row['id']; ?>"  class="btn btn-primary  btn-xs mb-3" >Transaction History</a></td>
 						  
 						</tr>
 					<?php } }else{ ?>
