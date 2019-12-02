@@ -4,7 +4,7 @@ include("core/pagination/pagination.php");
 function main() {
 	global $db_helper_obj;
 	// Pagination 
-	$item_per_page=5;
+	$item_per_page=10;
 	$page_number=get_page_no();
 	
 	$sort_by=get_sort_by();
@@ -60,7 +60,8 @@ function main() {
 						 
 						  	<a href="users_add.php?id=<?php echo $row["id"]; ?>" title="Make it as Inactive">   <i class="fa fa-pencil"></i></a>
 							&nbsp;&nbsp;&nbsp;
-							<button onclick="call_ajax_url('login_hstry','login_content','id=<?php echo $row['id']; ?>')" type="button" class="btn btn-primary  btn-xs mb-3" data-toggle="modal" data-target="#login_list_modal">Login History</button>
+					
+							<a target="_blank" href="login_history.php?id=<?php echo $row['id']; ?>"  class="btn btn-primary  btn-xs mb-3" >Login History</a>
 						 </td>
 						</tr>
 					<?php } }else{ ?>

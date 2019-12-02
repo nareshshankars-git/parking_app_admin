@@ -13,7 +13,12 @@ function main() {
 	$where="1";
 	$where_arr=array();
 	$page_url_form="";
-
+	if(isset($_GET['id']) && $_GET['id']!=""){
+		$where="b.id=?";
+		$where_arr=array($_GET['id']);
+		$page_url_form="&id=".$_GET['id'];
+	}
+	
 	$user_history_list=$db_helper_obj->login_history($where,$where_arr,$sort_by); // getting all the users data
 	$get_total_rows = count($user_history_list);
 	
