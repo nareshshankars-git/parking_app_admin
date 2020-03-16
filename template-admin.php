@@ -133,6 +133,7 @@ $site_path = 'http://'.$_SERVER['HTTP_HOST'];   // setting path
 									<li class="<?php echo get_menu_active('state.php'); ?>"><a href="state.php">State</a></li>
 									<li class="<?php echo get_menu_active('make_model.php'); ?>"><a href="make_model.php">Make Model</a></li>
 									<li class="<?php echo get_menu_active('general_setting.php'); ?>"><a href="general_setting.php">General Setting</a></li>
+									<li class="<?php echo get_menu_active('socket.php'); ?>"><a href="socket.php">Pull Data</a></li>
                                     
                                 </ul>
                             </li>

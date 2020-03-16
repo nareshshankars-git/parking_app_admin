@@ -5,7 +5,7 @@ if(!isset($_SESSION))
 	$server="localhost";
 	$username="root";
 	$password="root";
-	$db="parking_app";
+	$db="park2";
 	global $conn;
 	$conn = new PDO('mysql:host='.$server.';dbname='.$db.';charset=utf8mb4', $username, $password);
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

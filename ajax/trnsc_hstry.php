@@ -18,6 +18,14 @@ if(isset($_GET['id']) && $_GET['id']!=""){
 	<th>Amount</th>
 	<th>CheckIn Time</th>
 	<th>CheckOut Time</th>
+	<th>Token No</th>
+						<th>Vehicle No</th>
+						<th class="<?php echo get_sort_class("model");?>"><a href="<?php echo get_sort_url("model"); ?> ">Make Model</a></th>
+						<th class="<?php echo get_sort_class("slot_name");?>"><a href="<?php echo get_sort_url("slot_name"); ?> ">Slot Name</a></th>
+						<th class="<?php echo get_sort_class("name");?>"><a href="<?php echo get_sort_url("name"); ?> ">Customer</a></th>
+						<th class="<?php echo get_sort_class("check_in");?>"><a href="<?php echo get_sort_url("check_in"); ?> ">Check In</a></th>
+						<th class="<?php echo get_sort_class("check_out");?>"><a href="<?php echo get_sort_url("check_out"); ?> ">Check Out</a></th>
+						<th >Amount (Slot)</th>
 </tr>
 </thead>
 <tbody>
