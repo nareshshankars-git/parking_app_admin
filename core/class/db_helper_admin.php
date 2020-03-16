@@ -250,7 +250,7 @@ class db_helper extends db_query{
 		return $data;
 	}
 	function get_monthly_pass($where="1",$where_array,$sort_by=""){
-		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,f.month,f.updated_datetime,f.status,f.pass_no","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by,1);
+		$data= $this->select_query("customer a,reg_state c,make_model d,slot_master e,vehicle b,monthly_pass f","f.id,a.mobile_number,a.name,b.alpha,b.city,b.reg_no,c.name as state,d.name as model,e.name as slot_name,f.month,f.updated_datetime,f.status,f.pass_no","a.id=f.customer_id and c.id=b.state_id and d.id=b.make_model_id and e.id=f.slot_id and b.id=f.vehicle_id and ".$where,$where_array,$sort_by);
 		return $data;
 	}
 	function get_montly_pass_details($id){
